@@ -60,7 +60,7 @@ async function fetchRelatedProducts(categoryId, excludeId, limit = 3) {
 }
 
 async function createProduct(productData) {
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getCurrentUser();
   if (!user) return { data: null, error: { message: 'Debes iniciar sesión para publicar.' } };
 
   const slug = productData.title
@@ -165,8 +165,8 @@ async function signOutUser() {
 }
 
 async function getCurrentUser() {
-  const { data: { user } } = await supabase.auth.getUser();
-  return user;
+  const { data: { session } } = await supabase.auth.getSession();
+  return session?.user ?? null;
 }
 
 async function fetchMyProfile() {
@@ -186,7 +186,7 @@ async function fetchMySellerStats() {
 }
 
 // ─── Órdenes ───
-async function createOrder({ productId, sellerId, quantity, unitPrice, paymentMethod }) {
+async function createOrder({ productId, sellerId, quantity, unitPrice, paymentMethod, notes }) {
   const user = await getCurrentUser();
   if (!user) return { data: null, error: { message: 'Debes iniciar sesión para comprar.' } };
 
@@ -206,5 +206,12 @@ async function createOrder({ productId, sellerId, quantity, unitPrice, paymentMe
     payment_method: paymentMethod,
     payment_status: 'pending',
     delivery_status: 'pending',
+    notes: notes || null,
   }).select().single();
+}
+
+async function updateOrderDeliveryStatus(orderId, deliveryStatus) {
+  const user = await getCurrentUser();
+  if (!user) return { error: { message: 'Debes iniciar sesión.' } };
+  return supabase.from('orders').update({ delivery_status: deliveryStatus }).eq('id', orderId).eq('seller_id', user.id);
 }

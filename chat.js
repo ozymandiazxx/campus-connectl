@@ -392,7 +392,35 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-// Actualizar badge en cada carga de página
+// ─── Notificación global en vivo (toast) mientras la pestaña está abierta ───
+let _globalMessageChannel = null;
+
+async function initGlobalMessageNotifications() {
+  const user = await getCurrentUser();
+  if (!user) return;
+
+  if (_globalMessageChannel) supabase.removeChannel(_globalMessageChannel);
+
+  _globalMessageChannel = supabase
+    .channel(`global-messages:${user.id}`)
+    .on(
+      'postgres_changes',
+      { event: 'INSERT', schema: 'public', table: 'messages', filter: `receiver_id=eq.${user.id}` },
+      async (payload) => {
+        updateMessageBadge();
+        const { data: sender } = await supabase
+          .from('profiles')
+          .select('first_name')
+          .eq('id', payload.new.sender_id)
+          .maybeSingle();
+        showToast(`💬 Nuevo mensaje de ${sender?.first_name || 'alguien'}`);
+      }
+    )
+    .subscribe();
+}
+
+// Actualizar badge y activar notificaciones en cada carga de página
 document.addEventListener('DOMContentLoaded', () => {
   updateMessageBadge();
+  initGlobalMessageNotifications();
 });
