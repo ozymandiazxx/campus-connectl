@@ -115,7 +115,16 @@ function renderProductCard(p) {
 // ─── Format currency ───
 function fmt(n) { return `$${Number(n).toFixed(2)}`; }
 
+// ─── Refleja el estado de sesión en el botón de la nav ───
+async function updateAuthNav() {
+  const link = document.getElementById('nav-auth-link');
+  if (!link || typeof getCurrentUser !== 'function') return;
+  const user = await getCurrentUser();
+  if (user) link.textContent = 'Mi cuenta';
+}
+
 // ─── Init on page load ───
 document.addEventListener('DOMContentLoaded', () => {
   updateCartBadge();
+  updateAuthNav();
 });
