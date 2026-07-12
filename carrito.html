@@ -163,6 +163,12 @@
     const cart = getCart();
     if (cart.length === 0) return;
 
+    const ownProduct = cart.find(item => item.sellerId === user.id);
+    if (ownProduct) {
+      showToast(`No puedes comprar tu propio producto: "${ownProduct.title}". Elimínalo del carrito para continuar.`);
+      return;
+    }
+
     const reference = document.getElementById('payment-reference').value.trim();
     showToast('Registrando tu pedido…');
 

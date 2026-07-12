@@ -89,6 +89,9 @@
     const product = normalizeProduct(raw);
     window.currentProduct = product;
 
+    const currentUser = await getCurrentUser();
+    const isOwner = currentUser && currentUser.id === product.sellerId;
+
     document.getElementById('bc-cat').textContent = product.category;
     document.title = `${product.title} — Campus Connect`;
 
@@ -117,16 +120,23 @@
             <div class="seller-name">${product.seller}</div>
             <div class="seller-meta">Vendedor · ${product.university} · ★ ${Number(product.sellerRating).toFixed(1)}</div>
           </div>
-          <button class="btn btn-ghost" style="font-size: 0.85rem; padding: 0.5rem 0.85rem;" onclick="openProductChat()">Mensaje</button>
+          ${isOwner ? '' : `<button class="btn btn-ghost" style="font-size: 0.85rem; padding: 0.5rem 0.85rem;" onclick="openProductChat()">Mensaje</button>`}
         </div>
 
         <div class="detail-actions">
-          <button class="btn btn-primary" style="flex: 1;" onclick="addToCart(window.currentProduct)">
-            🛒 Añadir al carrito
-          </button>
-          <button class="btn btn-ghost" onclick="addToCart(window.currentProduct); window.location.href='carrito.html'">
-            Comprar ahora
-          </button>
+          ${isOwner ? `
+            <div style="background: var(--bg-deep); border: 1px solid var(--line); border-radius: 10px; padding: 0.85rem; flex: 1; text-align: center; color: var(--text-mute);">
+              Este es tu producto
+            </div>
+            <a href="vender.html?id=${product.id}" class="btn btn-ghost">✏️ Editar</a>
+          ` : `
+            <button class="btn btn-primary" style="flex: 1;" onclick="addToCart(window.currentProduct)">
+              🛒 Añadir al carrito
+            </button>
+            <button class="btn btn-ghost" onclick="addToCart(window.currentProduct); window.location.href='carrito.html'">
+              Comprar ahora
+            </button>
+          `}
         </div>
 
         <div class="detail-desc">
