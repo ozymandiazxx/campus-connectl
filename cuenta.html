@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi cuenta — Campus Connect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">C</span>
+      <span>Campus<span style="color: var(--cyan)">Connect</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Inicio</a>
+      <a href="explorar.html">Explorar</a>
+      <a href="vender.html">Vender</a>
+      <a href="index.html#como-funciona">¿Cómo funciona?</a>
+    </div>
+    <div class="nav-actions">
+      <a href="carrito.html" class="cart-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+        <span class="cart-count">0</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="container" id="auth-view">
+  <div class="form-wrap">
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <h1 style="font-family: var(--font-display); font-size: 2.25rem; font-weight: 500;">
+        Bienvenido a <em style="font-style: italic; color: var(--cyan);">Campus Connect</em>
+      </h1>
+      <p style="color: var(--text-mute); margin-top: 0.5rem;">Inicia sesión o regístrate con tu correo institucional.</p>
+    </div>
+
+    <div class="form-card">
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('login')">Iniciar sesión</button>
+        <button class="tab" onclick="switchTab('signup')">Crear cuenta</button>
+      </div>
+
+      <form id="form-login" onsubmit="handleLogin(event)">
+        <div class="field">
+          <label>Correo institucional</label>
+          <input type="email" required placeholder="tu.nombre@puce.edu.ec">
+          <div class="field-hint">Solo aceptamos correos universitarios (.edu / .edu.ec)</div>
+        </div>
+        <div class="field">
+          <label>Contraseña</label>
+          <input type="password" required placeholder="••••••••">
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin: 0.5rem 0 1.25rem; font-size: 0.85rem;">
+          <label style="color: var(--text-mute); display: flex; align-items: center; gap: 0.4rem;">
+            <input type="checkbox"> Recordarme
+          </label>
+          <a href="#" style="color: var(--cyan);">¿Olvidaste tu contraseña?</a>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block btn-lg">Iniciar sesión →</button>
+      </form>
+
+      <form id="form-signup" onsubmit="handleSignup(event)" style="display: none;">
+        <div class="field-row">
+          <div class="field">
+            <label>Nombre</label>
+            <input type="text" required placeholder="Henry">
+          </div>
+          <div class="field">
+            <label>Apellido</label>
+            <input type="text" required placeholder="Prado">
+          </div>
+        </div>
+        <div class="field">
+          <label>Correo institucional</label>
+          <input type="email" required placeholder="tu.nombre@puce.edu.ec">
+        </div>
+        <div class="field">
+          <label>Universidad</label>
+          <select id="signup-university" required>
+            <option value="">Selecciona…</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Contraseña</label>
+          <input type="password" required minlength="8" placeholder="Mínimo 8 caracteres">
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-mute); margin-bottom: 1.25rem;">
+          Al crear una cuenta aceptas los <a href="terminos.html" style="color: var(--cyan);">términos</a> y la <a href="privacidad.html" style="color: var(--cyan);">política de privacidad</a>.
+        </p>
+        <button type="submit" class="btn btn-primary btn-block btn-lg">Crear cuenta →</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Dashboard view (shown when logged in) -->
+<div class="container" id="dashboard-view" style="display: none;">
+  <header class="page-header">
+    <h1>Hola, <em id="user-name">Henry</em></h1>
+    <p style="color: var(--text-mute);">Aquí puedes gestionar tus publicaciones, compras y configuraciones.</p>
+  </header>
+
+  <div class="dash-layout">
+    <aside class="dash-sidebar">
+      <div class="dash-user">
+        <div class="dash-avatar" id="user-initial">H</div>
+        <div>
+          <div class="dash-name" id="user-fullname">Henry Prado</div>
+          <div class="dash-email" id="user-email">henry@puce.edu.ec</div>
+        </div>
+      </div>
+      <ul class="dash-menu">
+        <li><a href="#" class="active" data-panel="panel-resumen" onclick="switchDashTab(this, 'panel-resumen')">📊 Resumen</a></li>
+        <li><a href="#" data-panel="panel-publicaciones" onclick="switchDashTab(this, 'panel-publicaciones')">📦 Mis publicaciones</a></li>
+        <li><a href="#" data-panel="panel-compras" onclick="switchDashTab(this, 'panel-compras')">🛍️ Mis compras</a></li>
+        <li><a href="#" data-panel="panel-mensajes" onclick="switchDashTab(this, 'panel-mensajes')">💬 Mensajes</a></li>
+        <li><a href="#" data-panel="panel-favoritos" onclick="switchDashTab(this, 'panel-favoritos')">⭐ Favoritos</a></li>
+        <li><a href="#" data-panel="panel-config" onclick="switchDashTab(this, 'panel-config')">⚙️ Configuración</a></li>
+        <li><a href="#" onclick="logout()" style="color: var(--red);">⎋ Cerrar sesión</a></li>
+      </ul>
+    </aside>
+
+    <div class="dash-content">
+      <!-- ═══ PANEL: Resumen ═══ -->
+      <div class="dash-panel active" id="panel-resumen">
+        <h2 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 1.5rem;">Resumen general</h2>
+        <div class="dash-stats">
+          <div class="dash-stat">
+            <div class="dash-stat-label">Publicaciones activas</div>
+            <div class="dash-stat-num" id="stat-products">0</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-label">Ventas totales</div>
+            <div class="dash-stat-num" id="stat-revenue">$0.00</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-label">Valoración</div>
+            <div class="dash-stat-num" id="stat-rating">5.0★</div>
+          </div>
+        </div>
+        <h3 style="font-family: var(--font-display); font-size: 1.15rem; margin: 1.5rem 0 1rem;">Mis publicaciones</h3>
+        <div id="my-products" style="background: var(--bg-deep); border: 1px solid var(--line); border-radius: 12px; padding: 1rem;">
+          <p style="color: var(--text-mute);">Cargando…</p>
+        </div>
+      </div>
+
+      <!-- ═══ PANEL: Mis publicaciones ═══ -->
+      <div class="dash-panel" id="panel-publicaciones">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h2 style="font-family: var(--font-display); font-size: 1.4rem;">Mis publicaciones</h2>
+          <a href="vender.html" class="btn btn-primary" style="font-size: 0.9rem;">+ Nuevo producto</a>
+        </div>
+        <div id="pub-list" style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <p style="color: var(--text-mute);">Cargando…</p>
+        </div>
+      </div>
+
+      <!-- ═══ PANEL: Mis compras ═══ -->
+      <div class="dash-panel" id="panel-compras">
+        <h2 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 1.5rem;">Mis compras</h2>
+        <div id="orders-list" style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <p style="color: var(--text-mute);">Cargando…</p>
+        </div>
+      </div>
+
+      <!-- ═══ PANEL: Mensajes ═══ -->
+      <div class="dash-panel" id="panel-mensajes">
+        <h2 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 1.5rem;">Mensajes</h2>
+        <div id="conversations-list" style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <p style="color: var(--text-mute);">Cargando…</p>
+        </div>
+      </div>
+
+      <!-- ═══ PANEL: Favoritos ═══ -->
+      <div class="dash-panel" id="panel-favoritos">
+        <h2 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 1.5rem;">Favoritos</h2>
+        <div style="background: var(--bg-deep); border: 1px solid var(--line); border-radius: 12px; padding: 2rem; text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">⭐</div>
+          <p style="color: var(--text-mute); margin-bottom: 0.5rem;">No tienes favoritos guardados.</p>
+          <p style="color: var(--text-mute); font-size: 0.85rem;">Marca productos como favoritos mientras exploras para verlos aquí.</p>
+          <a href="explorar.html" class="btn btn-primary" style="margin-top: 1rem; font-size: 0.9rem;">Explorar productos →</a>
+        </div>
+      </div>
+
+      <!-- ═══ PANEL: Configuración ═══ -->
+      <div class="dash-panel" id="panel-config">
+        <h2 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 1.5rem;">Configuración</h2>
+
+        <div style="background: var(--bg-deep); border: 1px solid var(--line); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.05rem; margin-bottom: 1rem;">👤 Datos personales</h3>
+          <form id="form-profile" onsubmit="handleProfileUpdate(event)" style="display: flex; flex-direction: column; gap: 1rem;">
+            <div class="field-row">
+              <div class="field">
+                <label>Nombre</label>
+                <input type="text" id="cfg-firstname" required>
+              </div>
+              <div class="field">
+                <label>Apellido</label>
+                <input type="text" id="cfg-lastname" required>
+              </div>
+            </div>
+            <div class="field">
+              <label>Correo</label>
+              <input type="email" id="cfg-email" disabled style="opacity: 0.6;">
+            </div>
+            <div class="field">
+              <label>Universidad</label>
+              <input type="text" id="cfg-university" disabled style="opacity: 0.6;">
+            </div>
+            <button type="submit" class="btn btn-primary" style="align-self: flex-start;">Guardar cambios</button>
+          </form>
+        </div>
+
+        <div style="background: var(--bg-deep); border: 1px solid var(--line); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.05rem; margin-bottom: 1rem;">🔒 Cambiar contraseña</h3>
+          <form id="form-password" onsubmit="handlePasswordChange(event)" style="display: flex; flex-direction: column; gap: 1rem;">
+            <div class="field">
+              <label>Nueva contraseña</label>
+              <input type="password" id="cfg-newpass" required minlength="8" placeholder="Mínimo 8 caracteres">
+            </div>
+            <div class="field">
+              <label>Confirmar contraseña</label>
+              <input type="password" id="cfg-confirmpass" required minlength="8" placeholder="Repite la contraseña">
+            </div>
+            <button type="submit" class="btn btn-primary" style="align-self: flex-start;">Actualizar contraseña</button>
+          </form>
+        </div>
+
+        <div style="background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3); border-radius: 12px; padding: 1.5rem;">
+          <h3 style="font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--red);">⚠️ Zona peligrosa</h3>
+          <p style="color: var(--text-mute); font-size: 0.85rem; margin-bottom: 1rem;">Al cerrar sesión se eliminará tu sesión activa en este navegador.</p>
+          <button class="btn" onclick="logout()" style="background: var(--red); color: white; font-size: 0.9rem;">Cerrar sesión</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© 2026 Campus Connect S.A.S.</span>
+      <span>Quito · Ecuador</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="app.js"></script>
+<script src="cookies.js"></script>
+<script src="chat.js"></script>
+<script>
+  let universities = [];
+
+  function switchTab(which) {
+    document.querySelectorAll('.tab').forEach((t, i) => {
+      t.classList.toggle('active',
+        (which === 'login' && i === 0) || (which === 'signup' && i === 1));
+    });
+    document.getElementById('form-login').style.display = which === 'login' ? '' : 'none';
+    document.getElementById('form-signup').style.display = which === 'signup' ? '' : 'none';
+  }
+
+  async function handleLogin(e) {
+    e.preventDefault();
+    const email = e.target.querySelector('input[type="email"]').value;
+    const password = e.target.querySelector('input[type="password"]').value;
+
+    const { error } = await signIn(email, password);
+    if (error) { showToast(error.message); return; }
+    showToast('¡Sesión iniciada!');
+    setTimeout(() => location.reload(), 800);
+  }
+
+  async function handleSignup(e) {
+    e.preventDefault();
+    const inputs = e.target.querySelectorAll('input');
+    const firstName = inputs[0].value;
+    const lastName = inputs[1].value;
+    const email = inputs[2].value;
+    const password = inputs[3].value;
+    const universityId = parseInt(document.getElementById('signup-university').value);
+
+    const uni = universities.find(u => u.id === universityId);
+    const domain = email.split('@')[1]?.toLowerCase();
+    if (!uni || domain !== uni.email_domain.toLowerCase()) {
+      showToast(`El correo debe pertenecer al dominio de la universidad seleccionada (@${uni ? uni.email_domain : '...'})`);
+      return;
+    }
+
+    const { data, error } = await signUp({ email, password, firstName, lastName, universityId });
+    if (error) { showToast(error.message); return; }
+
+    // Con "Confirm email" desactivado, el usuario queda activo de inmediato.
+    // Si Supabase ya devolvió sesión, recargamos para mostrar el dashboard.
+    if (data?.session) {
+      showToast('¡Cuenta creada! Entrando…');
+      setTimeout(() => location.reload(), 800);
+    } else {
+      // Fallback: si por alguna razón no hay sesión, ir al login
+      showToast('¡Cuenta creada! Inicia sesión para continuar.');
+      setTimeout(() => switchTab('login'), 1600);
+    }
+  }
+
+  async function logout() {
+    await signOutUser();
+    location.reload();
+  }
+
+  // ─── Dashboard tab switching ───
+  function switchDashTab(link, panelId) {
+    event.preventDefault();
+    document.querySelectorAll('.dash-menu a').forEach(a => a.classList.remove('active'));
+    link.classList.add('active');
+    document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
+    const panel = document.getElementById(panelId);
+    if (panel) panel.classList.add('active');
+  }
+
+  let _currentProfile = null;
+
+  async function loadDashboard(profile) {
+    _currentProfile = profile;
+    document.getElementById('auth-view').style.display = 'none';
+    document.getElementById('dashboard-view').style.display = 'block';
+    document.getElementById('user-name').textContent = profile.first_name;
+    document.getElementById('user-fullname').textContent = `${profile.first_name} ${profile.last_name}`;
+    document.getElementById('user-email').textContent = profile.email;
+    document.getElementById('user-initial').textContent = (profile.first_name || '?').charAt(0).toUpperCase();
+
+    // ── Resumen stats ──
+    const stats = await fetchMySellerStats();
+    document.getElementById('stat-rating').textContent = `${Number(profile.rating ?? 5).toFixed(1)}★`;
+    document.getElementById('stat-products').textContent = stats?.total_products ?? 0;
+    document.getElementById('stat-revenue').textContent = fmt(stats?.total_revenue ?? 0);
+
+    // ── Mis publicaciones (resumen + panel) ──
+    const { data: myProducts } = await supabase
+      .from('products')
+      .select('id, title, price, status, created_at')
+      .eq('seller_id', profile.id)
+      .order('created_at', { ascending: false });
+
+    const emptyPubMsg = `<p style="color: var(--text-mute);">Aún no has publicado nada. <a href="vender.html" style="color: var(--cyan);">Publica tu primer producto →</a></p>`;
+
+    const list = document.getElementById('my-products');
+    const pubList = document.getElementById('pub-list');
+
+    if (!myProducts || myProducts.length === 0) {
+      list.innerHTML = emptyPubMsg;
+      pubList.innerHTML = emptyPubMsg;
+    } else {
+      list.innerHTML = myProducts.map(p => `
+        <div style="background: var(--bg-deep); border: 1px solid var(--line); border-radius: 12px; padding: 1rem; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <a href="producto.html?id=${p.id}" style="color: var(--text); font-weight: 500;">${p.title}</a>
+            <div style="color: var(--text-mute); font-size: 0.8rem; margin-top: 0.25rem;">
+              ${new Date(p.created_at).toLocaleDateString('es-EC')} ·
+              <span style="color: ${p.status === 'active' ? 'var(--green)' : 'var(--text-mute)'};">${p.status === 'active' ? '● Activo' : '○ ' + p.status}</span>
+            </div>
+          </div>
+          <span style="font-weight: 600; color: var(--cyan);">${fmt(p.price)}</span>
+        </div>
+      `).join('');
+
+      pubList.innerHTML = myProducts.map(p => `
+        <div style="background: var(--bg-deep); border: 1px solid var(--line); border-radius: 12px; padding: 1rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.75rem;">
+            <div>
+              <a href="producto.html?id=${p.id}" style="color: var(--text); font-weight: 500;">${p.title}</a>
+              <div style="color: var(--text-mute); font-size: 0.8rem; margin-top: 0.25rem;">
+                ${new Date(p.created_at).toLocaleDateString('es-EC')} ·
+                <span style="color: ${p.status === 'active' ? 'var(--green)' : 'var(--text-mute)'};">${p.status === 'active' ? '● Activo' : p.status === 'sold' ? '● Vendido' : '○ Pausado'}</span>
+              </div>
+            </div>
+            <span style="font-weight: 600; color: var(--cyan);">${fmt(p.price)}</span>
+          </div>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <a href="vender.html?id=${p.id}" class="btn btn-ghost" style="font-size:0.8rem; padding:0.4rem 0.7rem;">✏️ Editar</a>
+            ${p.status === 'active'
+              ? `<button class="btn btn-ghost" style="font-size:0.8rem; padding:0.4rem 0.7rem;" onclick="handleStatusChange('${p.id}','paused')">⏸ Pausar</button>`
+              : p.status === 'paused'
+              ? `<button class="btn btn-ghost" style="font-size:0.8rem; padding:0.4rem 0.7rem;" onclick="handleStatusChange('${p.id}','active')">▶️ Reactivar</button>`
+              : ''}
+            ${p.status !== 'sold' ? `<button class="btn btn-ghost" style="font-size:0.8rem; padding:0.4rem 0.7rem;" onclick="handleStatusChange('${p.id}','sold')">✅ Marcar vendido</button>` : ''}
+            <button class="btn btn-ghost" style="font-size:0.8rem; padding:0.4rem 0.7rem; color:var(--red);" onclick="handleDeleteProduct('${p.id}')">🗑️ Eliminar</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ── Mis compras ──
+    const { data: myOrders } = await supabase
+      .from('orders')
+      .select('id, total, payment_status, delivery_status, created_at, products(title)')
+      .eq('buyer_id', profile.id)
+      .order('created_at', { ascending: false });
+
+    const ordersList = document.getElementById('orders-list');
+    if (!myOrders || myOrders.length === 0) {
+      ordersList.innerHTML = `
+        <div style="background: var(--bg-deep); border: 1px solid var(--line); border-radius: 12px; padding: 2rem; text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🛍️</div>
+          <p style="color: var(--text-mute); margin-bottom: 0.5rem;">Aún no has comprado nada.</p>
+          <a href="explorar.html" class="btn btn-primary" style="margin-top: 1rem; font-size: 0.9rem;">Explorar productos →</a>
+        </div>`;
+    } else {
+      const statusColors = { pending: '#f59e0b', paid: 'var(--green)', cancelled: 'var(--red)' };
+      const statusLabels = { pending: '⏳ Pendiente', paid: '✅ Pagado', cancelled: '❌ Cancelado' };
+      const deliveryLabels = { pending: '📦 Por enviar', shipped: '🚚 Enviado', delivered: '✅ Entregado' };
+      ordersList.innerHTML = myOrders.map(o => `
+        <div style="background: var(--bg-deep); border: 1px solid var(--line); border-radius: 12px; padding: 1rem; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-weight: 500;">${o.products?.title || 'Producto'}</div>
+            <div style="color: var(--text-mute); font-size: 0.8rem; margin-top: 0.25rem;">
+              ${new Date(o.created_at).toLocaleDateString('es-EC')} ·
+              <span style="color: ${statusColors[o.payment_status] || 'var(--text-mute)'};">${statusLabels[o.payment_status] || o.payment_status}</span> ·
+              ${deliveryLabels[o.delivery_status] || o.delivery_status}
+            </div>
+          </div>
+          <span style="font-weight: 600; color: var(--cyan);">${fmt(o.total)}</span>
+        </div>
+      `).join('');
+    }
+
+    // ── Mensajes ──
+    const conversations = await loadConversations();
+    const convList = document.getElementById('conversations-list');
+    if (conversations.length === 0) {
+      convList.innerHTML = `
+        <div style="background: var(--bg-deep); border: 1px solid var(--line); border-radius: 12px; padding: 2rem; text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">💬</div>
+          <p style="color: var(--text-mute); margin-bottom: 0.5rem;">Aún no tienes mensajes.</p>
+          <p style="color: var(--text-mute); font-size: 0.85rem;">Cuando compres o vendas un producto, podrás chatear con la otra parte aquí.</p>
+        </div>`;
+    } else {
+      convList.innerHTML = conversations.map(c => `
+        <div style="background: var(--bg-deep); border: 1px solid var(--line); border-radius: 12px; padding: 1rem; display:flex; justify-content:space-between; align-items:center; cursor:pointer;"
+             onclick="openConversation('${c.id}', '${c.productTitle.replace(/'/g, "\\'")}', '${c.otherName.replace(/'/g, "\\'")}')">
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div class="dash-avatar" style="width:36px; height:36px; font-size:0.9rem;">${c.otherInitial}</div>
+            <div>
+              <div style="font-weight:500;">${c.otherName} · <span style="color:var(--text-mute); font-weight:400;">${c.productTitle}</span></div>
+              <div style="color: var(--text-mute); font-size: 0.8rem; margin-top: 0.15rem;">${c.lastMessage || 'Sin mensajes aún'}</div>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="color: var(--text-dim); font-size: 0.75rem;">${formatChatTime(c.lastMessageAt)}</div>
+            ${c.unreadCount > 0 ? `<span style="background: var(--cyan); color:#000; border-radius:999px; font-size:0.7rem; padding:0.1rem 0.45rem; font-weight:700;">${c.unreadCount}</span>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ── Configuración: llenar campos ──
+    document.getElementById('cfg-firstname').value = profile.first_name || '';
+    document.getElementById('cfg-lastname').value = profile.last_name || '';
+    document.getElementById('cfg-email').value = profile.email || '';
+    document.getElementById('cfg-university').value = profile.universities?.short_name || '';
+  }
+
+  function openConversation(conversationId, productTitle, otherName) {
+    renderChatModal(conversationId, productTitle, otherName);
+  }
+
+  async function handleStatusChange(productId, status) {
+    const { error } = await updateProductStatus(productId, status);
+    if (error) { showToast(`Error: ${error.message}`); return; }
+    showToast('Publicación actualizada.');
+    await loadDashboard(_currentProfile);
+  }
+
+  async function handleDeleteProduct(productId) {
+    if (!confirm('¿Eliminar esta publicación? Esta acción no se puede deshacer.')) return;
+    const { error } = await deleteProduct(productId);
+    if (error) { showToast(`Error: ${error.message}`); return; }
+    showToast('Publicación eliminada.');
+    await loadDashboard(_currentProfile);
+  }
+
+  // ─── Config: actualizar perfil ───
+  async function handleProfileUpdate(e) {
+    e.preventDefault();
+    const firstName = document.getElementById('cfg-firstname').value;
+    const lastName = document.getElementById('cfg-lastname').value;
+
+    const { error } = await supabase
+      .from('profiles')
+      .update({ first_name: firstName, last_name: lastName })
+      .eq('id', _currentProfile.id);
+
+    if (error) {
+      showToast('Error al guardar: ' + error.message);
+    } else {
+      showToast('¡Perfil actualizado!');
+      document.getElementById('user-name').textContent = firstName;
+      document.getElementById('user-fullname').textContent = `${firstName} ${lastName}`;
+      document.getElementById('user-initial').textContent = firstName.charAt(0).toUpperCase();
+    }
+  }
+
+  // ─── Config: cambiar contraseña ───
+  async function handlePasswordChange(e) {
+    e.preventDefault();
+    const newPass = document.getElementById('cfg-newpass').value;
+    const confirmPass = document.getElementById('cfg-confirmpass').value;
+
+    if (newPass !== confirmPass) {
+      showToast('Las contraseñas no coinciden.');
+      return;
+    }
+
+    const { error } = await supabase.auth.updateUser({ password: newPass });
+    if (error) {
+      showToast('Error: ' + error.message);
+    } else {
+      showToast('¡Contraseña actualizada!');
+      document.getElementById('cfg-newpass').value = '';
+      document.getElementById('cfg-confirmpass').value = '';
+    }
+  }
+
+  async function init() {
+    universities = await fetchUniversities();
+    document.getElementById('signup-university').insertAdjacentHTML('beforeend',
+      universities.map(u => `<option value="${u.id}">${u.short_name} — ${u.name}</option>`).join(''));
+
+    const profile = await fetchMyProfile();
+    if (profile) await loadDashboard(profile);
+  }
+
+  init();
+</script>
+</body>
+</html>

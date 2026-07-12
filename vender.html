@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Publicar producto — Campus Connect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">C</span>
+      <span>Campus<span style="color: var(--cyan)">Connect</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Inicio</a>
+      <a href="explorar.html">Explorar</a>
+      <a href="vender.html" class="active">Vender</a>
+      <a href="index.html#como-funciona">¿Cómo funciona?</a>
+    </div>
+    <div class="nav-actions">
+      <a href="cuenta.html" class="btn btn-ghost">Mi cuenta</a>
+      <a href="carrito.html" class="cart-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+        <span class="cart-count">0</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <header class="page-header">
+    <div class="breadcrumb">
+      <a href="index.html">Inicio</a> / <span>Publicar</span>
+    </div>
+    <h1>Publica tu <em>producto</em></h1>
+    <p style="color: var(--text-mute); max-width: 600px; margin-top: 1rem;">Vende libros, ofrece tutorías o monetiza tus habilidades. Tu publicación aparecerá en el marketplace en cuanto la apruebes.</p>
+  </header>
+
+  <div class="form-wrap">
+    <form class="form-card" id="sell-form">
+      <div class="field">
+        <label>Título del producto o servicio</label>
+        <input type="text" id="field-title" required placeholder="Ej. Libro de Cálculo Stewart 8va edición">
+        <div class="field-hint">Describe en una línea qué estás vendiendo</div>
+      </div>
+
+      <div class="field">
+        <label>Categoría</label>
+        <select id="field-category" required>
+          <option value="">Selecciona una categoría…</option>
+        </select>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Precio (USD)</label>
+          <input type="number" id="field-price" min="0" step="0.50" required placeholder="0.00">
+        </div>
+        <div class="field">
+          <label>Condición / Tipo</label>
+          <select id="field-condition" required>
+            <option value="nuevo">Nuevo</option>
+            <option value="como_nuevo">Usado - como nuevo</option>
+            <option value="usado_bueno">Usado - buen estado</option>
+            <option value="digital">Digital</option>
+            <option value="servicio">Servicio</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Descripción</label>
+        <textarea id="field-description" required placeholder="Describe el estado, características y cualquier detalle relevante…"></textarea>
+        <div class="field-hint">Mínimo 50 caracteres · sé claro y honesto</div>
+      </div>
+
+      <div class="field">
+        <label>Fotografías</label>
+        <div class="upload-area" onclick="document.getElementById('file-input').click()">
+          <div class="icon">📷</div>
+          <p><strong style="color: var(--cyan);">Haz clic para subir</strong> o arrastra las imágenes aquí</p>
+          <p style="font-size: 0.8rem; margin-top: 0.25rem;">PNG, JPG hasta 5MB · máximo 5 fotos</p>
+        </div>
+        <input type="file" id="file-input" accept="image/*" multiple style="display:none">
+        <div id="image-preview" style="display:flex; gap:0.5rem; margin-top:0.75rem; flex-wrap:wrap;"></div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Universidad</label>
+          <select id="field-university" required>
+            <option value="">Selecciona…</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Forma de entrega</label>
+          <select id="field-delivery" required>
+            <option value="campus">Entrega en campus</option>
+            <option value="envio">Envío a domicilio</option>
+            <option value="digital">Entrega digital</option>
+            <option value="virtual">Modalidad virtual</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 1rem;">
+        Publicar producto →
+      </button>
+      <p style="text-align: center; color: var(--text-dim); font-size: 0.85rem; margin-top: 1rem;">
+        Al publicar aceptas los <a href="terminos.html" style="color: var(--cyan);">términos del marketplace</a>.
+      </p>
+    </form>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© 2026 Campus Connect S.A.S.</span>
+      <span>Quito · Ecuador</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="app.js"></script>
+<script src="cookies.js"></script>
+<script>
+  let editingProductId = null;
+  let existingImageUrls = [];
+
+  async function init() {
+    const user = await getCurrentUser();
+    if (!user) {
+      showToast('Inicia sesión para publicar un producto.');
+      setTimeout(() => window.location.href = 'cuenta.html', 1200);
+      return;
+    }
+
+    const [categories, universities] = await Promise.all([fetchCategories(), fetchUniversities()]);
+    document.getElementById('field-category').insertAdjacentHTML('beforeend',
+      categories.map(c => `<option value="${c.id}">${c.name}</option>`).join(''));
+    document.getElementById('field-university').insertAdjacentHTML('beforeend',
+      universities.map(u => `<option value="${u.id}">${u.short_name} — ${u.name}</option>`).join(''));
+
+    const params = new URLSearchParams(window.location.search);
+    editingProductId = params.get('id');
+    if (!editingProductId) return;
+
+    const product = await fetchProductById(editingProductId);
+    if (!product || product.seller_id !== user.id) {
+      showToast('No puedes editar este producto.');
+      setTimeout(() => window.location.href = 'cuenta.html', 1200);
+      return;
+    }
+
+    document.querySelector('h1').innerHTML = 'Edita tu <em>producto</em>';
+    document.querySelector('button[type="submit"]').textContent = 'Guardar cambios →';
+
+    document.getElementById('field-title').value = product.title;
+    document.getElementById('field-description').value = product.description;
+    document.getElementById('field-category').value = product.category_id;
+    document.getElementById('field-price').value = product.price;
+    document.getElementById('field-condition').value = product.condition;
+    document.getElementById('field-university').value = product.university_id;
+    document.getElementById('field-delivery').value = product.delivery_type;
+
+    existingImageUrls = product.image_urls || [];
+    document.getElementById('image-preview').innerHTML = existingImageUrls.map(url => `
+      <img src="${url}" style="width:64px; height:64px; object-fit:cover; border-radius:8px; border:1px solid var(--line);">
+    `).join('');
+  }
+
+  document.getElementById('file-input').addEventListener('change', e => {
+    const preview = document.getElementById('image-preview');
+    preview.innerHTML = [...e.target.files].slice(0, 5).map(file => `
+      <img src="${URL.createObjectURL(file)}" style="width:64px; height:64px; object-fit:cover; border-radius:8px; border:1px solid var(--line);">
+    `).join('');
+  });
+
+  document.getElementById('sell-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = editingProductId ? 'Guardando…' : 'Publicando…';
+
+    const files = [...document.getElementById('file-input').files].slice(0, 5);
+    const imageUrls = files.length > 0 ? await uploadProductImages(files) : existingImageUrls;
+
+    const payload = {
+      title: document.getElementById('field-title').value,
+      description: document.getElementById('field-description').value,
+      categoryId: parseInt(document.getElementById('field-category').value),
+      universityId: parseInt(document.getElementById('field-university').value),
+      price: parseFloat(document.getElementById('field-price').value),
+      condition: document.getElementById('field-condition').value,
+      deliveryType: document.getElementById('field-delivery').value,
+      imageUrls,
+    };
+
+    const { data, error } = editingProductId
+      ? await updateProduct(editingProductId, payload)
+      : await createProduct(payload);
+
+    if (error) {
+      showToast(`Error: ${error.message}`);
+      submitBtn.disabled = false;
+      submitBtn.textContent = editingProductId ? 'Guardar cambios →' : 'Publicar producto →';
+      return;
+    }
+    showToast(editingProductId ? '¡Producto actualizado!' : '¡Producto publicado con éxito!');
+    setTimeout(() => window.location.href = 'cuenta.html', 1600);
+  });
+
+  init();
+</script>
+</body>
+</html>

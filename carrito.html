@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carrito — Campus Connect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">C</span>
+      <span>Campus<span style="color: var(--cyan)">Connect</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Inicio</a>
+      <a href="explorar.html">Explorar</a>
+      <a href="vender.html">Vender</a>
+      <a href="index.html#como-funciona">¿Cómo funciona?</a>
+    </div>
+    <div class="nav-actions">
+      <a href="cuenta.html" class="btn btn-ghost">Mi cuenta</a>
+      <a href="carrito.html" class="cart-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+        <span class="cart-count">0</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <header class="page-header">
+    <div class="breadcrumb">
+      <a href="index.html">Inicio</a> / <span>Carrito</span>
+    </div>
+    <h1>Tu <em>carrito</em></h1>
+  </header>
+
+  <div class="cart-layout" id="cart-root">
+    <!-- Filled by JS -->
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© 2026 Campus Connect S.A.S.</span>
+      <span>Quito · Ecuador</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="app.js"></script>
+<script src="cookies.js"></script>
+<script>
+  let selectedPayment = 'payphone';
+
+  function renderCart() {
+    const cart = getCart();
+    const root = document.getElementById('cart-root');
+
+    if (cart.length === 0) {
+      root.innerHTML = `
+        <div style="grid-column: 1/-1;">
+          <div class="empty-state">
+            <div class="icon">🛒</div>
+            <h3>Tu carrito está vacío</h3>
+            <p>Explora el marketplace para encontrar productos increíbles.</p>
+            <a href="explorar.html" class="btn btn-primary" style="margin-top: 1.5rem;">Explorar productos</a>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    const items = cart.map(p => `
+        <div class="cart-item">
+          <div class="cart-item-img">${p.icon}</div>
+          <div>
+            <div class="cart-item-name">${p.title}</div>
+            <div class="cart-item-meta">${p.category} · ${p.seller} · ${p.university}</div>
+            <button class="remove-btn" onclick="removeFromCart('${p.id}')" style="margin-top: 0.4rem;">Eliminar</button>
+          </div>
+          <div class="cart-item-actions">
+            <div class="qty-control">
+              <button onclick="updateCartQty('${p.id}', ${p.qty - 1})">−</button>
+              <span class="qty-value">${p.qty}</span>
+              <button onclick="updateCartQty('${p.id}', ${p.qty + 1})">+</button>
+            </div>
+            <div class="cart-item-price">${fmt(p.price * p.qty)}</div>
+          </div>
+        </div>
+    `).join('');
+
+    const subtotal = cart.reduce((sum, p) => sum + p.price * p.qty, 0);
+    const fee = subtotal * 0.05; // 5% comisión marketplace
+    const total = subtotal + fee;
+
+    root.innerHTML = `
+      <div class="cart-items">${items}</div>
+      <aside class="cart-summary">
+        <h2 class="summary-title">Resumen del pedido</h2>
+        <div class="summary-line">
+          <span>Subtotal</span>
+          <span class="amount">${fmt(subtotal)}</span>
+        </div>
+        <div class="summary-line">
+          <span>Comisión marketplace (5%)</span>
+          <span class="amount">${fmt(fee)}</span>
+        </div>
+        <div class="summary-line">
+          <span>Envío / Entrega</span>
+          <span class="amount" style="color: var(--green);">Gratis</span>
+        </div>
+        <div class="summary-line total">
+          <span>Total</span>
+          <span class="amount">${fmt(total)}</span>
+        </div>
+
+        <div style="margin: 1.5rem 0 0.75rem; font-size: 0.9rem; font-weight: 600;">Método de pago</div>
+        <div class="pay-options">
+          <div class="pay-option selected" data-pay="payphone" onclick="selectPay('payphone')">📱 PayPhone</div>
+          <div class="pay-option" data-pay="paypal" onclick="selectPay('paypal')">💳 PayPal</div>
+          <div class="pay-option" data-pay="card" onclick="selectPay('card')">💳 Tarjeta</div>
+          <div class="pay-option" data-pay="transfer" onclick="selectPay('transfer')">🏦 Transferencia</div>
+        </div>
+
+        <button class="btn btn-primary btn-block btn-lg" onclick="checkout()" style="margin-top: 1.25rem;">
+          Pagar ${fmt(total)} →
+        </button>
+        <p style="font-size: 0.8rem; color: var(--text-dim); text-align: center; margin-top: 0.75rem;">
+          🔒 Pago seguro · Tu dinero solo se libera al confirmar la entrega
+        </p>
+      </aside>
+    `;
+  }
+
+  function selectPay(method) {
+    selectedPayment = method;
+    document.querySelectorAll('.pay-option').forEach(opt => {
+      opt.classList.toggle('selected', opt.dataset.pay === method);
+    });
+  }
+
+  async function checkout() {
+    const user = await getCurrentUser();
+    if (!user) {
+      showToast('Inicia sesión para completar tu compra.');
+      setTimeout(() => window.location.href = 'cuenta.html', 1200);
+      return;
+    }
+
+    const cart = getCart();
+    if (cart.length === 0) return;
+
+    showToast(`Creando pedido y redirigiendo a ${selectedPayment.toUpperCase()}…`);
+
+    for (const item of cart) {
+      const { error } = await createOrder({
+        productId: item.id,
+        sellerId: item.sellerId,
+        quantity: item.qty,
+        unitPrice: item.price,
+        paymentMethod: selectedPayment,
+      });
+      if (error) {
+        showToast(`Error al crear el pedido: ${error.message}`);
+        return;
+      }
+    }
+
+    setTimeout(() => {
+      alert(`✓ Pedido(s) creado(s) con estado "pendiente de pago".\n\nEn producción, este botón abre la pasarela real (${selectedPayment.toUpperCase()}). Ver GUIA_DESPLIEGUE.md para esa integración.`);
+      localStorage.removeItem('cc_cart_v2');
+      window.location.href = 'index.html';
+    }, 1000);
+  }
+
+  renderCart();
+</script>
+</body>
+</html>
