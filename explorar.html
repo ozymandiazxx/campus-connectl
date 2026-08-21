@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explorar productos — Campus Connect</title>
+<meta name="description" content="Explora libros, apuntes, tutorías y servicios de estudiantes en tu campus. Filtra por categoría, universidad y precio.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Campus Connect">
+<meta property="og:title" content="Explorar productos — Campus Connect">
+<meta property="og:description" content="Explora libros, apuntes, tutorías y servicios de estudiantes en tu campus. Filtra por categoría, universidad y precio.">
+<meta property="og:image" content="https://micampusconnect.shop/assets/logo.png">
+<meta property="og:url" content="https://micampusconnect.shop/explorar.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="assets/logo-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <img src="assets/logo-icon.svg" class="logo-mark" alt="Campus Connect">
+      <span>Campus<span style="color: var(--primary)">Connect</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Inicio</a>
+      <a href="explorar.html" class="active">Explorar</a>
+      <a href="vender.html">Vender</a>
+      <a href="index.html#como-funciona">¿Cómo funciona?</a>
+    </div>
+    <div class="nav-actions">
+      <div class="search-mini">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="search-input" placeholder="Buscar productos…" aria-label="Buscar productos">
+      </div>
+      <a href="cuenta.html" class="btn btn-ghost" id="nav-auth-link">Mi cuenta</a>
+      <a href="cuenta.html#mensajes" class="msg-btn" title="Mensajes">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span class="msg-count">0</span>
+      </a>
+      <a href="carrito.html" class="cart-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+        <span class="cart-count">0</span>
+      </a>
+      <button class="nav-hamburger" onclick="toggleMobileNav()" aria-label="Abrir menú">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-nav-panel" id="mobile-nav-panel">
+    <a href="index.html">Inicio</a>
+    <a href="explorar.html">Explorar</a>
+    <a href="vender.html">Vender</a>
+    <a href="index.html#como-funciona">¿Cómo funciona?</a>
+  </div>
+</nav>
+
+<header class="page-header">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="index.html">Inicio</a> / <span>Explorar</span>
+    </div>
+    <h1>Explora el <em>marketplace</em></h1>
+  </div>
+</header>
+
+<div class="container">
+  <div class="explore-layout">
+    <!-- FILTERS -->
+    <aside class="filters">
+      <div class="filter-group">
+        <h4 class="filter-title">Rango de precio</h4>
+        <div class="price-slider">
+          <div class="price-slider-track"></div>
+          <div class="price-slider-fill" id="price-slider-fill"></div>
+          <input type="range" id="price-min-range" class="price-slider-input" min="0" max="200" step="5" value="0" aria-label="Precio mínimo">
+          <input type="range" id="price-max-range" class="price-slider-input" min="0" max="200" step="5" value="200" aria-label="Precio máximo">
+        </div>
+        <div class="price-slider-values">
+          <span id="price-min-label">$0</span>
+          <span id="price-max-label">$200+</span>
+        </div>
+      </div>
+      <div class="filter-group">
+        <h4 class="filter-title">Categoría</h4>
+        <div class="chip-group" id="filter-cat"></div>
+      </div>
+      <div class="filter-group">
+        <h4 class="filter-title">Universidad</h4>
+        <div class="chip-group" id="filter-uni"></div>
+      </div>
+      <div class="filter-group">
+        <h4 class="filter-title">Condición</h4>
+        <div class="chip-group" id="filter-condition">
+          <button type="button" class="chip f-condition" data-value="nuevo">Nuevo</button>
+          <button type="button" class="chip f-condition" data-value="como_nuevo">Como nuevo</button>
+          <button type="button" class="chip f-condition" data-value="usado_bueno">Buen estado</button>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-block" id="clear-filters" style="margin-top: 1rem;">Limpiar filtros</button>
+    </aside>
+
+    <!-- RESULTS -->
+    <div>
+      <div class="results-bar">
+        <span class="results-count" id="results-count"></span>
+        <select class="sort-select" id="sort-select" aria-label="Ordenar resultados">
+          <option value="featured">Destacados</option>
+          <option value="price-asc">Precio: menor a mayor</option>
+          <option value="price-desc">Precio: mayor a menor</option>
+          <option value="alpha">A–Z</option>
+        </select>
+      </div>
+      <div class="products-grid-3" id="results-grid"></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© 2026 Campus Connect S.A.S.</span>
+      <span>Quito · Ecuador</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="app.js"></script>
+<script src="cookies.js"></script>
+<script src="chat.js"></script>
+<script>
+  const normalize = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  let _featuredIds = new Set();
+  const PRICE_SLIDER_MAX = 200;
+
+  function getFilters() {
+    return {
+      cats: [...document.querySelectorAll('.f-cat.active')].map(c => c.dataset.value),
+      unis: [...document.querySelectorAll('.f-uni.active')].map(c => c.dataset.value),
+      conditions: [...document.querySelectorAll('.f-condition.active')].map(c => c.dataset.value),
+      min: Number(document.getElementById('price-min-range').value) || null,
+      max: Number(document.getElementById('price-max-range').value) >= PRICE_SLIDER_MAX ? null : Number(document.getElementById('price-max-range').value),
+      search: document.getElementById('search-input').value.trim(),
+      sort: document.getElementById('sort-select').value,
+    };
+  }
+
+  async function applyFilters() {
+    const f = getFilters();
+    const products = await fetchProducts({
+      minPrice: f.min, maxPrice: f.max, search: f.search, sort: f.sort, conditions: f.conditions,
+    });
+
+    let list = products.map(normalizeProduct).filter(p =>
+      (f.cats.length === 0 || f.cats.includes(p.category)) &&
+      (f.unis.length === 0 || f.unis.includes(p.university))
+    );
+
+    document.getElementById('results-count').textContent = `${list.length} resultados`;
+    const grid = document.getElementById('results-grid');
+    if (list.length === 0) {
+      grid.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;"><div class="icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div><h3>Sin resultados</h3><p>Intenta ajustar los filtros</p></div>';
+    } else {
+      grid.innerHTML = list.map(p => renderProductCard(p, _featuredIds)).join('');
+    }
+  }
+
+  function toggleChip(chip) {
+    chip.classList.toggle('active');
+    chip.setAttribute('aria-pressed', chip.classList.contains('active'));
+    applyFilters();
+  }
+
+  function updatePriceSlider(e) {
+    const minEl = document.getElementById('price-min-range');
+    const maxEl = document.getElementById('price-max-range');
+    let min = Number(minEl.value), max = Number(maxEl.value);
+    // Los dos <input type="range"> no se pueden cruzar — si el usuario
+    // arrastra uno más allá del otro, empuja al otro en vez de invertirse.
+    if (min > max) { if (e && e.target === minEl) maxEl.value = min; else minEl.value = max; }
+    min = Number(minEl.value); max = Number(maxEl.value);
+
+    document.getElementById('price-slider-fill').style.left = `${(min / PRICE_SLIDER_MAX) * 100}%`;
+    document.getElementById('price-slider-fill').style.right = `${100 - (max / PRICE_SLIDER_MAX) * 100}%`;
+    document.getElementById('price-min-label').textContent = `$${min}`;
+    document.getElementById('price-max-label').textContent = max >= PRICE_SLIDER_MAX ? `$${PRICE_SLIDER_MAX}+` : `$${max}`;
+    applyFilters();
+  }
+
+  async function initFilters() {
+    const [categories, universities, featuredIds] = await Promise.all([
+      fetchCategories(), fetchUniversities(), fetchFeaturedProductIds(),
+    ]);
+    _featuredIds = featuredIds;
+
+    document.getElementById('filter-cat').innerHTML = categories.map(c =>
+      `<button type="button" class="chip f-cat" data-value="${c.name}">${categoryIcon(c.name)} ${c.name}</button>`
+    ).join('');
+    document.getElementById('filter-uni').innerHTML = universities.map(u =>
+      `<button type="button" class="chip f-uni" data-value="${u.short_name}">${u.short_name}</button>`
+    ).join('');
+
+    // Preselecciona filtros desde los query params — llegan de la barra
+    // de búsqueda del hero (?cat=Libros&uni=ESPE&max=50) o de un enlace
+    // directo a una categoría (?cat=Libros).
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialCat = urlParams.get('cat');
+    if (initialCat) {
+      const match = categories.find(c => normalize(c.slug).includes(normalize(initialCat)) || normalize(c.name).includes(normalize(initialCat)));
+      if (match) {
+        const chip = document.querySelector(`.f-cat[data-value="${match.name}"]`);
+        if (chip) chip.classList.add('active');
+      }
+    }
+    const initialUni = urlParams.get('uni');
+    if (initialUni) {
+      const chip = document.querySelector(`.f-uni[data-value="${initialUni}"]`);
+      if (chip) chip.classList.add('active');
+    }
+    const initialMax = parseFloat(urlParams.get('max'));
+    if (!isNaN(initialMax)) {
+      document.getElementById('price-max-range').value = Math.min(initialMax, PRICE_SLIDER_MAX);
+      updatePriceSlider();
+    }
+
+    document.querySelectorAll('.f-cat, .f-uni, .f-condition').forEach(el => el.addEventListener('click', () => toggleChip(el)));
+    applyFilters();
+  }
+
+  document.getElementById('price-min-range').addEventListener('input', updatePriceSlider);
+  document.getElementById('price-max-range').addEventListener('input', updatePriceSlider);
+  document.getElementById('search-input').addEventListener('input', applyFilters);
+  document.getElementById('sort-select').addEventListener('change', applyFilters);
+  document.getElementById('clear-filters').addEventListener('click', () => {
+    document.querySelectorAll('.f-cat, .f-uni, .f-condition').forEach(c => c.classList.remove('active'));
+    document.getElementById('price-min-range').value = 0;
+    document.getElementById('price-max-range').value = PRICE_SLIDER_MAX;
+    document.getElementById('search-input').value = '';
+    updatePriceSlider();
+  });
+
+  initFilters();
+</script>
+</body>
+</html>

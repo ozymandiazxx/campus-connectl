@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /cuenta.html
+Disallow: /carrito.html
+
+Sitemap: https://micampusconnect.shop/sitemap.xml

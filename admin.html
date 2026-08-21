@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de administración — Campus Connect</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="assets/logo-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <img src="assets/logo-icon.svg" class="logo-mark" alt="Campus Connect">
+      <span>Campus<span style="color: var(--primary)">Connect</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Inicio</a>
+      <a href="explorar.html">Explorar</a>
+      <a href="cuenta.html">Mi cuenta</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container" id="gate-view" style="padding: 4rem 0; text-align: center;">
+  <p style="color: var(--text-mute);">Verificando acceso…</p>
+</div>
+
+<div class="container" id="admin-view" style="display: none; padding: 2rem 0 4rem;">
+  <header class="page-header">
+    <h1>Panel de <em>administración</em></h1>
+    <p style="color: var(--text-mute); margin-top: 0.5rem;">Transferencias por aprobar y reportes de la comunidad.</p>
+  </header>
+
+  <div style="display: flex; gap: 0.5rem; margin: 1.5rem 0; border-bottom: 1px solid var(--line);">
+    <button class="admin-tab active" data-tab="tab-transfers" onclick="switchAdminTab(this, 'tab-transfers')">Transferencias <span id="count-transfers" class="admin-tab-count"></span></button>
+    <button class="admin-tab" data-tab="tab-reports" onclick="switchAdminTab(this, 'tab-reports')">Reportes <span id="count-reports" class="admin-tab-count"></span></button>
+  </div>
+
+  <div id="tab-transfers" class="admin-tab-panel">
+    <div id="transfers-list" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
+  </div>
+
+  <div id="tab-reports" class="admin-tab-panel" style="display: none;">
+    <div id="reports-list" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
+  </div>
+</div>
+
+<style>
+  .admin-tab {
+    background: none; border: none; cursor: pointer;
+    padding: 0.75rem 1rem; font-family: var(--font-display); font-size: 0.95rem;
+    color: var(--text-mute); border-bottom: 2px solid transparent; margin-bottom: -1px;
+  }
+  .admin-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+  .admin-tab-count { color: var(--text-dim); font-size: 0.8rem; }
+  .admin-card { background: var(--bg-deep); border: 1px solid var(--line); border-radius: 12px; padding: 1rem; }
+</style>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© 2026 Campus Connect S.A.S.</span>
+      <span>Quito · Ecuador</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="app.js"></script>
+<script src="cookies.js"></script>
+<script>
+  const reasonLabels = {
+    spam: 'Spam', contenido_inapropiado: 'Contenido inapropiado', fraude: 'Fraude',
+    producto_falso: 'Producto falso', acoso: 'Acoso', otro: 'Otro',
+  };
+
+  function switchAdminTab(btn, tabId) {
+    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.admin-tab-panel').forEach(p => p.style.display = 'none');
+    btn.classList.add('active');
+    document.getElementById(tabId).style.display = '';
+  }
+
+  async function renderTransfers() {
+    const transfers = await fetchPendingTransfers();
+    document.getElementById('count-transfers').textContent = transfers.length || '';
+    const list = document.getElementById('transfers-list');
+
+    if (transfers.length === 0) {
+      list.innerHTML = `<div class="admin-card" style="text-align:center; color: var(--text-mute);">No hay transferencias pendientes.</div>`;
+      return;
+    }
+
+    list.innerHTML = transfers.map(o => `
+      <div class="admin-card">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; flex-wrap:wrap;">
+          <div>
+            <div style="font-weight:600;">${escapeHtml(o.products?.title || 'Producto')}</div>
+            <div style="color: var(--text-mute); font-size: 0.85rem; margin-top:0.25rem;">
+              Comprador: ${o.buyer ? escapeHtml(`${o.buyer.first_name} ${o.buyer.last_name}`) : 'N/D'} ·
+              Vendedor: ${o.seller ? escapeHtml(`${o.seller.first_name} ${o.seller.last_name}`) : 'N/D'} ·
+              ${new Date(o.created_at).toLocaleString('es-EC')}
+            </div>
+            <div style="color: var(--text-mute); font-size: 0.85rem; margin-top:0.15rem;">Referencia: ${o.payment_reference ? escapeHtml(o.payment_reference) : 'sin referencia'}</div>
+          </div>
+          <span style="font-weight:700; color: var(--primary); white-space:nowrap;">${fmt(o.total)}</span>
+        </div>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.75rem;">
+          ${o.payment_proof_url ? `<button class="btn btn-ghost js-view-receipt" data-path="${escapeHtml(o.payment_proof_url)}" style="font-size:0.8rem; padding:0.4rem 0.7rem;">Ver comprobante</button>` : ''}
+          <button class="btn btn-primary js-approve" data-id="${o.id}" style="font-size:0.8rem; padding:0.4rem 0.7rem;">Aprobar pago</button>
+          <button class="btn btn-ghost js-reject" data-id="${o.id}" style="font-size:0.8rem; padding:0.4rem 0.7rem; color: var(--red);">Rechazar</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  async function renderReports() {
+    const reports = await fetchPendingReports();
+    document.getElementById('count-reports').textContent = reports.length || '';
+    const list = document.getElementById('reports-list');
+
+    if (reports.length === 0) {
+      list.innerHTML = `<div class="admin-card" style="text-align:center; color: var(--text-mute);">No hay reportes pendientes.</div>`;
+      return;
+    }
+
+    list.innerHTML = reports.map(r => `
+      <div class="admin-card">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; flex-wrap:wrap;">
+          <div>
+            <div style="font-weight:600;">${reasonLabels[r.reason] || r.reason}</div>
+            <div style="color: var(--text-mute); font-size: 0.85rem; margin-top:0.25rem;">
+              Reportado por: ${r.reporter ? escapeHtml(`${r.reporter.first_name} ${r.reporter.last_name}`) : 'N/D'} ·
+              ${new Date(r.created_at).toLocaleString('es-EC')}
+            </div>
+            ${r.reported_product ? `<div style="color: var(--text-mute); font-size: 0.85rem; margin-top:0.15rem;">Producto: <a href="producto.html?id=${r.reported_product.id}" style="color: var(--primary-light);">${escapeHtml(r.reported_product.title)}</a></div>` : ''}
+            ${r.reported_user ? `<div style="color: var(--text-mute); font-size: 0.85rem; margin-top:0.15rem;">Usuario: <a href="perfil.html?id=${r.reported_user.id}" style="color: var(--primary-light);">${escapeHtml(`${r.reported_user.first_name} ${r.reported_user.last_name}`)}</a></div>` : ''}
+            ${r.description ? `<div style="color: var(--text-mute); font-size: 0.85rem; margin-top:0.4rem; font-style: italic;">"${escapeHtml(r.description)}"</div>` : ''}
+          </div>
+        </div>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.75rem;">
+          <button class="btn btn-primary js-resolve" data-id="${r.id}" style="font-size:0.8rem; padding:0.4rem 0.7rem;">Marcar resuelto</button>
+          <button class="btn btn-ghost js-dismiss" data-id="${r.id}" style="font-size:0.8rem; padding:0.4rem 0.7rem; color: var(--red);">Descartar</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  document.getElementById('transfers-list').addEventListener('click', async e => {
+    const viewBtn = e.target.closest('.js-view-receipt');
+    if (viewBtn) {
+      const url = await getPaymentReceiptUrl(viewBtn.dataset.path);
+      if (url) window.open(url, '_blank');
+      else showToast('No se pudo abrir el comprobante.');
+      return;
+    }
+    const approveBtn = e.target.closest('.js-approve');
+    if (approveBtn) {
+      if (!confirm('¿Confirmas que el dinero llegó y apruebas este pago?')) return;
+      approveBtn.disabled = true;
+      const { error } = await approveTransfer(approveBtn.dataset.id);
+      if (error) { showToast('Error: ' + error.message); approveBtn.disabled = false; return; }
+      showToast('Pago aprobado.');
+      renderTransfers();
+      return;
+    }
+    const rejectBtn = e.target.closest('.js-reject');
+    if (rejectBtn) {
+      if (!confirm('¿Rechazar esta transferencia? El comprador quedará con el pago como fallido.')) return;
+      rejectBtn.disabled = true;
+      const { error } = await rejectTransfer(rejectBtn.dataset.id);
+      if (error) { showToast('Error: ' + error.message); rejectBtn.disabled = false; return; }
+      showToast('Transferencia rechazada.');
+      renderTransfers();
+    }
+  });
+
+  document.getElementById('reports-list').addEventListener('click', async e => {
+    const resolveBtn = e.target.closest('.js-resolve');
+    if (resolveBtn) {
+      const { error } = await resolveReport(resolveBtn.dataset.id, 'resolved');
+      if (error) { showToast('Error: ' + error.message); return; }
+      showToast('Reporte marcado como resuelto.');
+      renderReports();
+      return;
+    }
+    const dismissBtn = e.target.closest('.js-dismiss');
+    if (dismissBtn) {
+      const { error } = await resolveReport(dismissBtn.dataset.id, 'dismissed');
+      if (error) { showToast('Error: ' + error.message); return; }
+      showToast('Reporte descartado.');
+      renderReports();
+    }
+  });
+
+  async function init() {
+    const user = await getCurrentUser();
+    if (!user || !(await amIAdmin())) {
+      window.location.href = 'index.html';
+      return;
+    }
+    document.getElementById('gate-view').style.display = 'none';
+    document.getElementById('admin-view').style.display = '';
+    renderTransfers();
+    renderReports();
+  }
+
+  init();
+</script>
+</body>
+</html>

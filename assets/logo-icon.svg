@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Campus Connect isotipo">
+  <defs>
+    <mask id="campus-connect-cutouts" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <rect width="512" height="512" fill="#fff"/>
+
+      <!-- Network carved into the pediment: three nodes, two links. -->
+      <path d="M256 112 152 196M256 112l104 84" fill="none" stroke="#000" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="256" cy="112" r="25" fill="#000"/>
+      <circle cx="152" cy="196" r="25" fill="#000"/>
+      <circle cx="360" cy="196" r="25" fill="#000"/>
+
+      <!-- Broad negative arch remains legible at navigation size. -->
+      <path d="M184 432V328a72 72 0 0 1 144 0v104Z" fill="#000"/>
+    </mask>
+  </defs>
+
+  <!-- One solid geometric mass; all white areas are genuine transparency. -->
+  <path
+    fill="currentColor"
+    mask="url(#campus-connect-cutouts)"
+    d="M64 224 234.4 84.6a34 34 0 0 1 43.2 0L448 224h-28v176c0 17.7-14.3 32-32 32H124c-17.7 0-32-14.3-32-32V224Z"
+  />
+</svg>

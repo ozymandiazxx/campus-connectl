@@ -1,0 +1,44 @@
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+.claude/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Variables de entorno (¡NUNCA subir a GitHub!)
+.env
+.env.local
+.env.production
+
+# Dependencias (no aplica aún, pero por si acaso)
+node_modules/
+
+# Build outputs
+dist/
+build/
+.next/
+.cache/
+
+# Archivos temporales
+*.tmp
+*.bak
+
+# Cache local del CLI de Supabase (vínculo al proyecto, versiones, etc.)
+supabase/.temp/
+
+# Skills de terceros instaladas localmente (npx skills add), no son parte del proyecto
+.agents/
+skills-lock.json
+
+.vercel
+.env*

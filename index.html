@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campus Connect — Aprende, crea y vende</title>
+<meta name="description" content="El marketplace universitario donde estudiantes intercambian libros, apuntes, tutorías y servicios.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Campus Connect">
+<meta property="og:title" content="Campus Connect — Aprende, crea y vende">
+<meta property="og:description" content="El marketplace universitario donde estudiantes intercambian libros, apuntes, tutorías y servicios.">
+<meta property="og:image" content="https://micampusconnect.shop/assets/logo.png">
+<meta property="og:url" content="https://micampusconnect.shop/index.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="assets/logo-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <img src="assets/logo-icon.svg" class="logo-mark" alt="Campus Connect">
+      <span>Campus<span style="color: var(--primary)">Connect</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Inicio</a>
+      <a href="explorar.html">Explorar</a>
+      <a href="vender.html">Vender</a>
+      <a href="#como-funciona">¿Cómo funciona?</a>
+    </div>
+    <div class="nav-actions">
+      <a href="cuenta.html" class="btn btn-ghost" id="nav-auth-link">Iniciar sesión</a>
+      <a href="cuenta.html#mensajes" class="msg-btn" title="Mensajes">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span class="msg-count">0</span>
+      </a>
+      <a href="carrito.html" class="cart-btn" title="Carrito">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+        <span class="cart-count">0</span>
+      </a>
+      <button class="nav-hamburger" onclick="toggleMobileNav()" aria-label="Abrir menú">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-nav-panel" id="mobile-nav-panel">
+    <a href="index.html">Inicio</a>
+    <a href="explorar.html">Explorar</a>
+    <a href="vender.html">Vender</a>
+    <a href="index.html#como-funciona">¿Cómo funciona?</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-eyebrow">
+          <span class="hero-dot"></span>
+          <span>Marketplace universitario · Ecuador</span>
+        </div>
+        <h1>Aprende, <em>crea</em><br>y vende dentro<br>de tu campus.</h1>
+        <p>Campus Connect es el marketplace exclusivo para la comunidad universitaria. Compra libros, consigue apuntes, ofrece tutorías y monetiza tus habilidades — todo entre estudiantes verificados.</p>
+        <div class="hero-actions">
+          <a href="explorar.html" class="btn btn-primary btn-lg">Explorar productos →</a>
+          <a href="vender.html" class="btn btn-ghost btn-lg">Empezar a vender</a>
+        </div>
+        <div class="hero-stats">
+          <div>
+            <div class="hero-stat-num">1.200+</div>
+            <div class="hero-stat-label">Estudiantes activos</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">3</div>
+            <div class="hero-stat-label">Universidades aliadas</div>
+          </div>
+          <div>
+            <div class="hero-stat-num" style="display:inline-flex; align-items:center; gap:0.3rem;">4.9 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg></div>
+            <div class="hero-stat-label">Valoración usuarios</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-feature" id="hero-feature"></div>
+    </div>
+  </div>
+</section>
+
+<div class="container hero-search-wrap">
+  <div class="hero-search-bar">
+    <div class="hs-field">
+      <label class="hs-label">Categoría</label>
+      <select id="hs-category">
+        <option value="">Todas</option>
+      </select>
+    </div>
+    <div class="hs-field">
+      <label class="hs-label">Universidad</label>
+      <select id="hs-university">
+        <option value="">Todas</option>
+      </select>
+    </div>
+    <div class="hs-field hs-field-price">
+      <label class="hs-label">Precio máximo <span id="hs-price-label">$200+</span></label>
+      <input type="range" id="hs-price" min="0" max="200" step="5" value="200">
+    </div>
+    <button class="btn btn-primary hs-submit" id="hs-search-btn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      Buscar productos
+    </button>
+  </div>
+</div>
+
+<!-- TRUST ROW -->
+<section class="hero-trust-section">
+  <div class="container hero-trust-row">
+    <div class="hero-trust-item">
+      <div class="hero-trust-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
+      <div>
+        <div class="hero-trust-title">Seguridad</div>
+        <div class="hero-trust-desc">Correo institucional verificado y pagos confirmados del lado del servidor.</div>
+      </div>
+    </div>
+    <div class="hero-trust-item">
+      <div class="hero-trust-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></div>
+      <div>
+        <div class="hero-trust-title">Variedad</div>
+        <div class="hero-trust-desc">Libros, apuntes, tutorías y servicios de estudiantes en tu propia universidad.</div>
+      </div>
+    </div>
+    <div class="hero-trust-item">
+      <div class="hero-trust-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></div>
+      <div>
+        <div class="hero-trust-title">Reputación real</div>
+        <div class="hero-trust-desc">Cada compra y venta queda reflejada en la calificación pública del perfil.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Categorías <em>destacadas</em></h2>
+        <p class="section-subtitle">Encuentra exactamente lo que necesitas para tu vida universitaria.</p>
+      </div>
+      <a href="explorar.html" class="section-link">Ver todas →</a>
+    </div>
+    <div class="cats-grid" id="cats-grid"></div>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Productos <em>destacados</em></h2>
+        <p class="section-subtitle">Los más vistos por la comunidad — se calcula solo, nadie lo marca a mano.</p>
+      </div>
+      <div class="carousel-nav">
+        <button class="carousel-btn" id="featured-prev" aria-label="Anterior">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <button class="carousel-btn" id="featured-next" aria-label="Siguiente">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+        <a href="explorar.html" class="section-link">Ver todo →</a>
+      </div>
+    </div>
+    <div class="carousel-track" id="featured-grid"></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="como-funciona">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Cómo <em>funciona</em></h2>
+        <p class="section-subtitle">Tres pasos simples para empezar a usar Campus Connect.</p>
+      </div>
+    </div>
+    <div class="how-layout">
+      <div class="how-timeline">
+        <div class="how-step">
+          <div class="how-step-rail">
+            <div class="how-num">01</div>
+            <div class="how-line"></div>
+          </div>
+          <div class="how-step-body">
+            <h3 class="how-title">Verifica tu cuenta</h3>
+            <p class="how-desc">Regístrate con tu correo institucional. Solo estudiantes verificados pueden comprar y vender en la plataforma.</p>
+          </div>
+        </div>
+        <div class="how-step">
+          <div class="how-step-rail">
+            <div class="how-num">02</div>
+            <div class="how-line"></div>
+          </div>
+          <div class="how-step-body">
+            <h3 class="how-title">Publica o explora</h3>
+            <p class="how-desc">Sube tus productos en minutos o busca lo que necesitas filtrando por categoría, precio o universidad.</p>
+          </div>
+        </div>
+        <div class="how-step">
+          <div class="how-step-rail">
+            <div class="how-num">03</div>
+          </div>
+          <div class="how-step-body">
+            <h3 class="how-title">Paga seguro</h3>
+            <p class="how-desc">Realiza transacciones protegidas con PayPal o transferencia bancaria verificada. Tu dinero solo se libera al confirmar la entrega.</p>
+          </div>
+        </div>
+      </div>
+      <aside class="how-side">
+        <div class="how-side-eyebrow">POR QUÉ CONFIAR</div>
+        <h3 class="how-side-title">Cada capa del sistema está pensada para proteger la transacción</h3>
+        <div class="how-side-list">
+          <div class="how-side-item">
+            <div class="how-side-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
+            <div class="how-side-text"><strong>Solo tu universidad.</strong> Las cuentas se verifican con correo institucional antes de poder publicar o comprar.</div>
+          </div>
+          <div class="how-side-item">
+            <div class="how-side-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+            <div class="how-side-text"><strong>Pagos verificados del lado del servidor.</strong> Ningún precio ni confirmación de pago se confía al navegador del comprador.</div>
+          </div>
+          <div class="how-side-item">
+            <div class="how-side-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 16.9l-6.2 3.4 1.6-6.8L2.2 8.9l6.9-.6z"/></svg></div>
+            <div class="how-side-text"><strong>Reputación real.</strong> Cada compra y venta queda reflejada en la calificación pública del perfil.</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section">
+  <div class="container">
+    <div class="cta-banner">
+      <div>
+        <h2 class="cta-title">¿Tienes algo que <em>vender</em>?</h2>
+        <p class="cta-desc">Publica tu primer producto en menos de 2 minutos.</p>
+      </div>
+      <a href="vender.html" class="btn btn-primary btn-lg">Publicar producto →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <img src="assets/logo-icon.svg" class="logo-mark" alt="Campus Connect">
+          <span>Campus<span style="color: var(--primary)">Connect</span></span>
+        </a>
+        <p>El marketplace universitario que conecta a estudiantes con recursos, servicios y oportunidades dentro de su campus.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Marketplace</h4>
+        <ul>
+          <li><a href="explorar.html?cat=Libros">Libros</a></li>
+          <li><a href="explorar.html?cat=Apuntes">Apuntes</a></li>
+          <li><a href="explorar.html?cat=Tutorías">Tutorías</a></li>
+          <li><a href="explorar.html?cat=Servicios">Servicios</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="#como-funciona">Cómo funciona</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Soporte</h4>
+        <ul>
+          <li><a href="mailto:hola@campusconnect.ec">Centro de ayuda</a></li>
+          <li><a href="privacidad.html">Política de Privacidad</a></li>
+          <li><a href="terminos.html">Términos y Condiciones</a></li>
+          <li><a href="cookies.html">Política de Cookies</a></li>
+          <li><a href="mailto:hola@campusconnect.ec">Contacto</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Campus Connect S.A.S. Todos los derechos reservados.</span>
+      <span>Quito · Ecuador</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="app.js"></script>
+<script src="cookies.js"></script>
+<script src="chat.js"></script>
+<script>
+  // Tarjeta destacada del hero: antes eran 3 ejemplos fijos con precio
+  // inventado e ícono en vez de foto, aunque ya existen productos reales
+  // de esas mismas categorías con foto real. Ahora es una sola tarjeta
+  // con carrusel sobre los productos reales más vistos — se reusa el
+  // mismo fetch que alimenta "Destacados" más abajo, sin segunda consulta.
+  let _heroFeatured = [];
+  let _heroIndex = 0;
+
+  function renderHeroFeature() {
+    const card = document.getElementById('hero-feature');
+    if (_heroFeatured.length === 0) { card.style.display = 'none'; return; }
+    const p = _heroFeatured[_heroIndex];
+    const multi = _heroFeatured.length > 1;
+
+    card.innerHTML = `
+      <a href="producto.html?id=${p.id}" style="text-decoration:none; color:inherit; display:block;">
+        <div class="hero-feature-img">
+          ${p.imageUrls?.[0]
+            ? `<img src="${p.imageUrls[0]}" style="width:100%; height:100%; object-fit:cover;">`
+            : p.icon}
+          <div class="hero-feature-badges"><span class="hero-feature-badge">★ Destacado</span></div>
+          <span class="hero-feature-type">${escapeHtml(p.category)}</span>
+          ${multi ? `
+            <button class="hero-feature-nav hero-feature-prev" aria-label="Anterior">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <button class="hero-feature-nav hero-feature-next" aria-label="Siguiente">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+            <div class="hero-feature-dots">${_heroFeatured.map((_, i) => `<span class="hero-feature-dot${i === _heroIndex ? ' active' : ''}"></span>`).join('')}</div>
+          ` : ''}
+        </div>
+        <div class="hero-feature-body">
+          <div class="hero-feature-title">${escapeHtml(p.title)}</div>
+          <div class="hero-feature-meta">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            ${escapeHtml(p.university)}
+          </div>
+          <div class="hero-feature-bottom">
+            <span class="hero-feature-price">${fmt(p.price)}</span>
+            <span class="hero-feature-stats">${p.views} vistas</span>
+          </div>
+        </div>
+      </a>
+    `;
+
+    if (multi) {
+      card.querySelector('.hero-feature-prev').addEventListener('click', (e) => {
+        e.preventDefault(); e.stopPropagation();
+        _heroIndex = (_heroIndex - 1 + _heroFeatured.length) % _heroFeatured.length;
+        renderHeroFeature();
+      });
+      card.querySelector('.hero-feature-next').addEventListener('click', (e) => {
+        e.preventDefault(); e.stopPropagation();
+        _heroIndex = (_heroIndex + 1) % _heroFeatured.length;
+        renderHeroFeature();
+      });
+    }
+  }
+
+  // ─── Barra de búsqueda flotante del hero ───
+  async function initHeroSearch() {
+    const [categories, universities] = await Promise.all([fetchCategories(), fetchUniversities()]);
+    document.getElementById('hs-category').insertAdjacentHTML('beforeend',
+      categories.map(c => `<option value="${escapeHtml(c.name)}">${escapeHtml(c.name)}</option>`).join(''));
+    document.getElementById('hs-university').insertAdjacentHTML('beforeend',
+      universities.map(u => `<option value="${escapeHtml(u.short_name)}">${escapeHtml(u.short_name)}</option>`).join(''));
+
+    const priceInput = document.getElementById('hs-price');
+    const priceLabel = document.getElementById('hs-price-label');
+    priceInput.addEventListener('input', () => {
+      priceLabel.textContent = priceInput.value >= 200 ? '$200+' : `$${priceInput.value}`;
+    });
+
+    document.getElementById('hs-search-btn').addEventListener('click', () => {
+      const params = new URLSearchParams();
+      const cat = document.getElementById('hs-category').value;
+      const uni = document.getElementById('hs-university').value;
+      if (cat) params.set('cat', cat);
+      if (uni) params.set('uni', uni);
+      if (priceInput.value < 200) params.set('max', priceInput.value);
+      window.location.href = `explorar.html${params.toString() ? '?' + params.toString() : ''}`;
+    });
+  }
+  initHeroSearch();
+
+  // Categorías: antes eran 4 tarjetas fijas en el HTML (ni siquiera
+  // incluían todas las categorías reales) con conteos inventados
+  // ("340+ publicaciones" no correspondía a nada en la base). Ahora se
+  // arman desde categories + un conteo real de productos activos — pero
+  // solo las principales, no todas: con 6-7 categorías la grilla de 4
+  // columnas dejaba una fila suelta con una sola tarjeta y mucho vacío
+  // al lado. El resto vive en "Ver todas" → explorar.html.
+  const HOME_CATEGORIES_LIMIT = 4;
+
+  async function renderCategoriesGrid() {
+    const [categories, allProducts] = await Promise.all([fetchCategories(), fetchProducts({})]);
+    const counts = {};
+    allProducts.forEach(p => { counts[p.category_id] = (counts[p.category_id] || 0) + 1; });
+
+    const shown = categories.slice(0, HOME_CATEGORIES_LIMIT);
+    const cardsHtml = shown.map(c => `
+      <a href="explorar.html?cat=${encodeURIComponent(c.name)}" class="cat-card">
+        <div class="cat-icon">${categoryIcon(c.name)}</div>
+        <div class="cat-title">${escapeHtml(c.name)}</div>
+        <div class="cat-count">${counts[c.id] || 0} publicaciones</div>
+      </a>
+    `).join('');
+    document.getElementById('cats-grid').innerHTML = cardsHtml;
+  }
+  renderCategoriesGrid();
+
+  fetchProducts({ sort: 'featured', limit: 8 }).then(products => {
+    _heroFeatured = products.slice(0, 5).map(normalizeProduct);
+    renderHeroFeature();
+
+    const grid = document.getElementById('featured-grid');
+    if (products.length === 0) {
+      grid.innerHTML = '<p style="color: var(--text-mute);">Aún no hay productos publicados. ¡Sé el primero!</p>';
+      return;
+    }
+    // El badge "★ Destacado" solo se pinta si de verdad tiene vistas —
+    // con un catálogo recién sembrado, sin esto todo se marcaría como
+    // destacado aunque nadie lo haya visto todavía.
+    const featuredIds = new Set(products.filter(p => p.views > 0).map(p => p.id));
+    grid.innerHTML = products.map(normalizeProduct).map(p => renderProductCard(p, featuredIds)).join('');
+
+    const track = grid;
+    document.getElementById('featured-prev').addEventListener('click', () => {
+      track.scrollBy({ left: -track.clientWidth * 0.8, behavior: 'smooth' });
+    });
+    document.getElementById('featured-next').addEventListener('click', () => {
+      track.scrollBy({ left: track.clientWidth * 0.8, behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
